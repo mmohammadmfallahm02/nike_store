@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:nike/constants/Product_sort.dart';
 import 'package:nike/constants/theme.dart';
+import 'package:nike/data/repo/product_repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,6 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    productRepository.getAll(ProductSort.latest).then((value) {
+      debugPrint(value.toString());
+    }).catchError((e) {
+      debugPrint(e.toString());
+    });
     const defaultFontFamily = TextStyle(
         fontFamily: "IranYekan", color: LightThemeColors.primaryTextColor);
     return MaterialApp(
@@ -35,10 +42,9 @@ class MyApp extends StatelessWidget {
           ),
           // color scheme
           colorScheme: const ColorScheme.light(
-            primary: LightThemeColors.primaryColor,
-            secondary: LightThemeColors.secondaryColor,
-            onSecondary: Colors.white
-          )),
+              primary: LightThemeColors.primaryColor,
+              secondary: LightThemeColors.secondaryColor,
+              onSecondary: Colors.white)),
       home: Scaffold(
           appBar: AppBar(title: const Text("فروشگاه نایک")),
           body: const Center(
