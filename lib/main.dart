@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nike/constants/Product_sort.dart';
 import 'package:nike/constants/theme.dart';
+import 'package:nike/data/repo/banner_repository.dart';
 import 'package:nike/data/repo/product_repository.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    productRepository.getAll(ProductSort.latest).then((value) {
+    bannerRepository.getAll().then((value) {
       debugPrint(value.toString());
     }).catchError((e) {
       debugPrint(e.toString());
