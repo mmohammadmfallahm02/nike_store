@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:nike/common/response_validator.dart';
 import 'package:nike/data/banner.dart';
 
@@ -18,8 +17,9 @@ class BannerRemoteDataSource
     final response = await httpClient.get('banner/slider');
     validateResponse(response);
     List<BannerEntity> banners = [];
-    (response.data as List)
-        .forEach((banner) => banners.add(BannerEntity.fromJson(banner)));
+    for (var banner in (response.data as List)) {
+      banners.add(BannerEntity.fromJson(banner));
+    }
     return banners;
   }
 }

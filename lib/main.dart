@@ -39,7 +39,8 @@ class MyApp extends StatelessWidget {
                   defaultFontFamily.copyWith(fontWeight: FontWeight.w700),
               caption: defaultFontFamily.apply(
                   color: LightThemeColors.secondaryTextColor),
-            ),
+                subtitle1: defaultFontFamily.apply(
+                    color: LightThemeColors.secondaryTextColor)),
             // color scheme
             colorScheme: const ColorScheme.light(
                 primary: LightThemeColors.primaryColor,

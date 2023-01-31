@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:nike/common/response_validator.dart';
-import 'package:nike/constants/exception.dart';
 import 'package:nike/data/product.dart';
 
 abstract class IProductDataSource {
@@ -19,8 +18,9 @@ class ProductRemoteDataSource
     final response = await httpClient.get('product/list?sort=$sort');
     validateResponse(response);
     List<ProductEntity> products = [];
-    (response.data as List)
-        .forEach((product) => products.add(ProductEntity.fromJson(product)));
+    for (var product in (response.data as List)) {
+      products.add(ProductEntity.fromJson(product));
+    }
     return products;
   }
 
@@ -29,10 +29,9 @@ class ProductRemoteDataSource
     final response = await httpClient.get('product/search?q=$searchTerm');
     validateResponse(response);
     List<ProductEntity> products = [];
-    (response.data as List)
-        .forEach((product) => products.add(ProductEntity.fromJson(product)));
+    for (var product in (response.data as List)) {
+      products.add(ProductEntity.fromJson(product));
+    }
     return products;
   }
-
-  
 }

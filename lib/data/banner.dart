@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 
 class BannerEntity {
   final int id;
