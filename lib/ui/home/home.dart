@@ -1,5 +1,8 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nike/common/widgets/image.dart';
+import 'package:nike/common/widgets/slider.dart';
 import 'package:nike/data/repo/banner_repository.dart';
 import 'package:nike/data/repo/product_repository.dart';
 import 'package:nike/gen/assets.gen.dart';
@@ -16,7 +19,9 @@ class HomeScreen extends StatelessWidget {
           bannerRepository: bannerRepository,
           productRepository: productRepository)
         ..add(HomeStarted()),
-      child: Scaffold(body: SafeArea(
+      child: Scaffold(
+          // backgroundColor: Colors.yellow,
+          body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             if (state is HomeSuccess) {
@@ -27,6 +32,10 @@ class HomeScreen extends StatelessWidget {
                     switch (index) {
                       case 1:
                         return Assets.images.nikeLogo.image(height: size / 12);
+                      case 3:
+                        return BannerSlider(
+                          banners: state.banners,
+                        );
                       default:
                         return Container();
                     }
