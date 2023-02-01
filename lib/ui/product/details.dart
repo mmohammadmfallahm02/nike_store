@@ -4,6 +4,7 @@ import 'package:nike/common/utils.dart';
 import 'package:nike/common/widgets/image.dart';
 import 'package:nike/constants/theme.dart';
 import 'package:nike/data/product.dart';
+import 'package:nike/ui/product/comment/comment_list.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProductEntity product;
@@ -86,13 +87,14 @@ class ProductDetailScreen extends StatelessWidget {
                     height: 10,
                     thickness: 1,
                   ),
-                  // const SizedBox(
-                  //   height: 1000,
-                  // )
+                  const SizedBox(
+                    height: 10,
+                  )
                 ],
               ),
             ),
-          )
+          ),
+          CommentList(productId: product.id)
         ],
       ),
     );

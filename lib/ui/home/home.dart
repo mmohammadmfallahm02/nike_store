@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nike/common/utils.dart';
+import 'package:nike/common/widgets/error.dart';
 import 'package:nike/common/widgets/slider.dart';
 import 'package:nike/data/product.dart';
 import 'package:nike/data/repo/banner_repository.dart';
@@ -60,18 +61,11 @@ class HomeScreen extends StatelessWidget {
                     }
                   });
             } else if (state is HomeError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(state.exception.message),
-                    ElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<HomeBloc>(context).add(HomeRefresh());
-                        },
-                        child: const Text('تلاش دوباره'))
-                  ],
-                ),
+              return AppErrorWidget(
+                exception: state.exception,
+                onPressed: () {
+                  BlocProvider.of<HomeBloc>(context).add(HomeRefresh());
+                },
               );
             } else if (state is HomeLoading) {
               return const Center(
