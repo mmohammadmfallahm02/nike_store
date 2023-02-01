@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
             fontFamily: "IranYekan",
             // text theme
             textTheme: TextTheme(
+              button: defaultFontFamily,
               bodyText2: defaultFontFamily,
               headline6:
                   defaultFontFamily.copyWith(fontWeight: FontWeight.w700),
