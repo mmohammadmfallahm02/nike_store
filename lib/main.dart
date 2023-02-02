@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nike/constants/theme.dart';
 import 'package:nike/ui/home/home.dart';
+import 'package:nike/ui/root.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,12 +35,12 @@ class MyApp extends StatelessWidget {
             fontFamily: "IranYekan",
             // text theme
             textTheme: TextTheme(
-              button: defaultFontFamily,
-              bodyText2: defaultFontFamily,
-              headline6:
-                  defaultFontFamily.copyWith(fontWeight: FontWeight.w700),
-              caption: defaultFontFamily.apply(
-                  color: LightThemeColors.secondaryTextColor),
+                button: defaultFontFamily,
+                bodyText2: defaultFontFamily,
+                headline6:
+                    defaultFontFamily.copyWith(fontWeight: FontWeight.w700),
+                caption: defaultFontFamily.apply(
+                    color: LightThemeColors.secondaryTextColor),
                 subtitle1: defaultFontFamily.apply(
                     color: LightThemeColors.secondaryTextColor)),
             // color scheme
@@ -47,6 +48,6 @@ class MyApp extends StatelessWidget {
                 primary: LightThemeColors.primaryColor,
                 secondary: LightThemeColors.secondaryColor,
                 onSecondary: Colors.white)),
-        home: const HomeScreen());
+        home: const RootScreen());
   }
 }
