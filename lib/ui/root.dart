@@ -17,9 +17,9 @@ class _RootScreenState extends State<RootScreen> {
   int selectedScreenIndex = homeIndex;
   final List<int> _history = [];
 
-  GlobalKey<NavigatorState> _homeKey = GlobalKey();
-  GlobalKey<NavigatorState> _cartKey = GlobalKey();
-  GlobalKey<NavigatorState> _profileKey = GlobalKey();
+  final GlobalKey<NavigatorState> _homeKey = GlobalKey();
+  final GlobalKey<NavigatorState> _cartKey = GlobalKey();
+  final GlobalKey<NavigatorState> _profileKey = GlobalKey();
 
   late final map = {
     homeIndex: _homeKey,
@@ -50,6 +50,7 @@ class _RootScreenState extends State<RootScreen> {
           body: IndexedStack(
             index: selectedScreenIndex,
             children: [
+            
               _navigator(_homeKey, homeIndex, const HomeScreen()),
               _navigator(
                   _cartKey, cartIndex, const Center(child: Text('CartScreen'))),

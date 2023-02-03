@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nike/constants/theme.dart';
-import 'package:nike/ui/home/home.dart';
-import 'package:nike/ui/root.dart';
+import 'package:nike/ui/auth/auth.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -48,6 +48,6 @@ class MyApp extends StatelessWidget {
                 primary: LightThemeColors.primaryColor,
                 secondary: LightThemeColors.secondaryColor,
                 onSecondary: Colors.white)),
-        home: const RootScreen());
+        home: const AuthScreen());
   }
 }
