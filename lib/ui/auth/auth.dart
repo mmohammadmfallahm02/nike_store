@@ -79,7 +79,8 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      authRepository.login("test@gmail.com", "123456");
+                      // authRepository.login("test@gmail.com", "123456");
+                      authRepository.refreshToken();
                     },
                     child: Text(
                       isLogin ? 'ورود' : 'ثبت نام',
