@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/gen/assets.gen.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -10,6 +11,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -59,7 +61,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       isLogin
                           ? 'اطلاعات حساب خود را وارد کنید'
                           : 'ایمیل و رمز عبور خود را وارد کنید',
-                      style: const TextStyle(color: onBackground, fontSize: 16)),
+                      style:
+                          const TextStyle(color: onBackground, fontSize: 16)),
                   const SizedBox(
                     height: 48,
                   ),
@@ -75,7 +78,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     height: 16,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      authRepository.login("test@gmail.com", "123456");
+                    },
                     child: Text(
                       isLogin ? 'ورود' : 'ثبت نام',
                       style: TextStyle(color: themeData.colorScheme.secondary),

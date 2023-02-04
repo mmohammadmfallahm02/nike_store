@@ -50,7 +50,6 @@ class _RootScreenState extends State<RootScreen> {
           body: IndexedStack(
             index: selectedScreenIndex,
             children: [
-            
               _navigator(_homeKey, homeIndex, const HomeScreen()),
               _navigator(
                   _cartKey, cartIndex, const Center(child: Text('CartScreen'))),

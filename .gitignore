@@ -44,5 +44,8 @@ app.*.map.json
 /android/app/release
 
 lib/common/http_clinet.dart
+lib/constants/constants.dart
 fonts
 images
+
+
