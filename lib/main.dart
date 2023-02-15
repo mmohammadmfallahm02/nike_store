@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nike/constants/theme.dart';
+import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/ui/auth/auth.dart';
 
-
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  authRepository.loadAuthInfo();
   runApp(const MyApp());
 }
 
