@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
           productRepository: productRepository)
         ..add(HomeStarted()),
       child: Scaffold(
-          // backgroundColor: Colors.yellow,
+          
           body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nike/data/auth.dart';
 import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/gen/assets.gen.dart';
+import 'package:nike/ui/auth/bloc/auth_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -10,11 +13,10 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  bool isLogin = true;
-  final TextEditingController usernameController =
-      TextEditingController(text: 'test@gmail.com');
-  final TextEditingController passwordController =
-      TextEditingController(text: '123456');
+  final TextEditingController usernameController = TextEditingController(
+      text: AuthRepository.loginInfoChangeNotifier.value?.username ?? '');
+  final TextEditingController passwordController = TextEditingController(
+      text: AuthRepository.loginInfoChangeNotifier.value?.password ?? '');
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,9 @@ class _AuthScreenState extends State<AuthScreen> {
           colorScheme: themeData.colorScheme.copyWith(
             onSurface: onBackground,
           ),
+          snackBarTheme: SnackBarThemeData(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              contentTextStyle: const TextStyle(fontFamily: 'IranYekan')),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -42,90 +47,125 @@ class _AuthScreenState extends State<AuthScreen> {
       child: Scaffold(
         backgroundColor: themeData.colorScheme.secondary,
         body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: size.width / 10, right: size.width / 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Assets.images.nikeLogo.image(
-                      color: themeData.colorScheme.onSecondary, scale: 2.5),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    isLogin ? 'خوش آمدید' : 'ثبت نام',
-                    style: const TextStyle(color: onBackground, fontSize: 32),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                      isLogin
-                          ? 'اطلاعات حساب خود را وارد کنید'
-                          : 'ایمیل و رمز عبور خود را وارد کنید',
-                      style:
-                          const TextStyle(color: onBackground, fontSize: 16)),
-                  const SizedBox(
-                    height: 48,
-                  ),
-                  TextField(
-                    controller: usernameController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration:
-                        const InputDecoration(label: Text('پست الکترونیک')),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _PasswordTextField(
-                    onBackground: onBackground,
-                    controller: passwordController,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // authRepository.login("test@gmail.com", "123456");
-                      authRepository.login(usernameController.text, passwordController.text);
-                    },
-                    child: Text(
-                      isLogin ? 'ورود' : 'ثبت نام',
-                      style: TextStyle(color: themeData.colorScheme.secondary),
+          child: BlocProvider<AuthBloc>(
+            create: (context) {
+              final bloc = AuthBloc(authRepository);
+              bloc.stream.forEach((state) {
+                if (state is AuthError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('خطای نامشخص')));
+                } else if (state is AuthSuccess) {
+                  Navigator.of(context).pop();
+                }
+              });
+              bloc.add(AuthStarted());
+              return bloc;
+            },
+            child: BlocBuilder<AuthBloc, AuthState>(
+              buildWhen: (previous, current) {
+                return current is AuthLoading ||
+                    current is AuthInitial ||
+                    current is AuthError;
+              },
+              builder: (context, state) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: size.width / 10, right: size.width / 10),
+                    child: ValueListenableBuilder<LoginInfo?>(
+                      valueListenable: AuthRepository.loginInfoChangeNotifier,
+                      builder: (context, value, child) => Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Assets.images.nikeLogo.image(
+                              color: themeData.colorScheme.onSecondary,
+                              scale: 2.5),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            state.isLoginMode ? 'خوش آمدید' : 'ثبت نام',
+                            style: const TextStyle(
+                                color: onBackground, fontSize: 32),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                              state.isLoginMode
+                                  ? 'اطلاعات حساب خود را وارد کنید'
+                                  : 'ایمیل و رمز عبور خود را وارد کنید',
+                              style: const TextStyle(
+                                  color: onBackground, fontSize: 16)),
+                          const SizedBox(
+                            height: 48,
+                          ),
+                          TextField(
+                            controller: usernameController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: const InputDecoration(
+                                label: Text('پست الکترونیک')),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          _PasswordTextField(
+                            onBackground: onBackground,
+                            controller: passwordController,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<AuthBloc>(context).add(
+                                  AuthButtonIsClicked(usernameController.text,
+                                      passwordController.text));
+                            },
+                            child: state is AuthLoading
+                                ? const CircularProgressIndicator()
+                                : Text(
+                                    state.isLoginMode ? 'ورود' : 'ثبت نام',
+                                    style: TextStyle(
+                                        color: themeData.colorScheme.secondary),
+                                  ),
+                          ),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.isLoginMode
+                                    ? 'حساب کاربری ندارید؟'
+                                    : 'حساب کاربری دارید؟',
+                                style: TextStyle(
+                                    color: onBackground.withOpacity(0.7)),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  BlocProvider.of<AuthBloc>(context)
+                                      .add(AuthModeChangeIsClicked());
+                                },
+                                child: Text(
+                                  state.isLoginMode ? 'ثبت نام' : 'ورود',
+                                  style: TextStyle(
+                                      color: themeData.colorScheme.primary,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        isLogin ? 'حساب کاربری ندارید؟' : 'حساب کاربری دارید؟',
-                        style: TextStyle(color: onBackground.withOpacity(0.7)),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isLogin = !isLogin;
-                          });
-                        },
-                        child: Text(
-                          isLogin ? 'ثبت نام' : 'ورود',
-                          style: TextStyle(
-                              color: themeData.colorScheme.primary,
-                              decoration: TextDecoration.underline),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),

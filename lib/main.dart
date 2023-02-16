@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nike/constants/theme.dart';
 import 'package:nike/data/repo/auth_repository.dart';
-import 'package:nike/ui/auth/auth.dart';
+import 'package:nike/ui/root.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   authRepository.loadAuthInfo();
+  authRepository.loadLoginInfo();
   runApp(const MyApp());
 }
 
@@ -50,6 +51,6 @@ class MyApp extends StatelessWidget {
                 primary: LightThemeColors.primaryColor,
                 secondary: LightThemeColors.secondaryColor,
                 onSecondary: Colors.white)),
-        home: const AuthScreen());
+        home: const RootScreen());
   }
 }

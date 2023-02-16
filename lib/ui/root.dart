@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nike/ui/cart/cart_screen.dart';
 import 'package:nike/ui/home/home.dart';
 
 class RootScreen extends StatefulWidget {
@@ -51,8 +52,7 @@ class _RootScreenState extends State<RootScreen> {
             index: selectedScreenIndex,
             children: [
               _navigator(_homeKey, homeIndex, const HomeScreen()),
-              _navigator(
-                  _cartKey, cartIndex, const Center(child: Text('CartScreen'))),
+              _navigator(_cartKey, cartIndex, CartScreen()),
               _navigator(_profileKey, profileIndex,
                   const Center(child: Text('ProfileScreen'))),
             ],
