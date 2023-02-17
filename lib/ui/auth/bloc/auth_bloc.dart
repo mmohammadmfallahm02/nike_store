@@ -1,6 +1,5 @@
-
-
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:nike/constants/exception.dart';
 import 'package:nike/data/repo/auth_repository.dart';
@@ -30,8 +29,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           isLoginMode = !isLoginMode;
           emit(AuthInitial(isLoginMode));
         }
-      } catch (e) {
-        emit(AuthError(e is AppException ? e : AppException()));
+      } on DioError catch (e) {
+        emit(AuthError(AppException(
+            message: e.response?.data['message'] ?? AppException())));
       }
     });
   }

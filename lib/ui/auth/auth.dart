@@ -53,7 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
               bloc.stream.forEach((state) {
                 if (state is AuthError) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('خطای نامشخص')));
+                       SnackBar(content: Text(state.appException.message)));
                 } else if (state is AuthSuccess) {
                   Navigator.of(context).pop();
                 }
