@@ -35,6 +35,11 @@ class MyApp extends StatelessWidget {
           Locale('fa'), // Persian
         ],
         theme: ThemeData(
+            snackBarTheme: SnackBarThemeData(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              contentTextStyle: defaultFontFamily.apply(
+                  color: Theme.of(context).colorScheme.onSecondary),
+            ),
             fontFamily: "IranYekan",
             // text theme
             textTheme: TextTheme(
